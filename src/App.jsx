@@ -121,7 +121,7 @@ const Header = ({ currentView, setView, user, profile, handleLogout }) => {
         </div>
         <div className="nav-actions">
           {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+            <div className="nav-profile-actions">
               <div style={{ position: 'relative' }}>
                 <div style={{ cursor: 'pointer', position: 'relative' }} onClick={() => setNotificationsOpen(!notificationsOpen)}>
                   <Bell size={20} color="var(--text-muted)" />
@@ -710,7 +710,10 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
                   <div style={{ fontWeight: 700, fontSize: '0.88rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{char.data?.name || char.name || 'Unnamed'}</div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{char.data?.race} {char.data?.className} Lv{char.data?.level || 1}</div>
                 </div>
-                <button onClick={() => editCharacter(char)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}><Edit3 size={14} /></button>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button onClick={() => editCharacter(char)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}><Edit3 size={14} /></button>
+                  <button onClick={() => deleteCharacter(char)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ff6b6b', padding: '4px' }}><Trash2 size={14} /></button>
+                </div>
               </div>
             ))}
           </div>
