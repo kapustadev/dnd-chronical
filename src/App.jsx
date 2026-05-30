@@ -246,7 +246,7 @@ const PricingPage = ({ setView }) => (
       <h1 className="section-title">Simple, transparent pricing</h1>
       <p className="section-subtitle">Whether you're a casual player or a dedicated Dungeon Master, we have a plan for you.</p>
     </div>
-    <div className="grid-3" style={{ maxWidth: '1400px' }}>
+    <div className="grid-3" style={{ width: '100%' }}>
       <div className="pricing-card">
         <div className="pricing-header"><h3 className="pricing-tier">Initiate</h3><div style={{ background: 'rgba(255,255,255,0.1)', padding: '0.1rem 0.5rem', borderRadius: '100px', fontSize: '0.6rem', fontWeight: 600 }}>FREE FOREVER</div></div>
         <div className="price-tag">$0<span>/mo</span></div>
@@ -290,7 +290,7 @@ const FaqPage = () => {
     { q: "Is the VTT mobile friendly?", a: "Character sheets and dice rolling are fully optimized for mobile. We recommend a tablet or desktop for the VTT." }
   ];
   return (
-    <section className="section-wrapper" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+    <section className="section-wrapper" style={{ width: '100%', margin: '0 auto' }}>
       <div className="section-header"><h1 className="section-title">Frequently Asked Questions</h1></div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
         {faqs.map((f, i) => (
@@ -306,7 +306,7 @@ const FaqPage = () => {
 
 const ContactPage = () => (
   <section className="section-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-    <div style={{ background: 'var(--bg-card)', padding: '2.5rem', borderRadius: 'var(--border-radius-large)', border: '1px solid var(--border-color)', width: '100%', maxWidth: '1400px' }}>
+    <div style={{ background: 'var(--bg-card)', padding: '2.5rem', borderRadius: 'var(--border-radius-large)', border: '1px solid var(--border-color)', width: '100%', width: '100%' }}>
       <h1 className="section-title" style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Contact Us</h1>
       <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.85rem' }}>Have a question or feature request? We'd love to hear from you.</p>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -629,7 +629,7 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
   if (!profile) return null;
 
   return (
-    <div style={{ padding: '2rem 1.5rem', maxWidth: '1400px', margin: '0 auto', minHeight: '80vh' }}>
+    <div style={{ padding: '2rem 1.5rem', width: '100%', margin: '0 auto', minHeight: '80vh' }}>
       {showAvatar && <AvatarModal profile={profile} onSelect={handleAvatarSelect} onClose={() => setShowAvatar(false)} />}
 
       {/* Profile Banner */}
@@ -861,7 +861,7 @@ const CampaignsScreen = ({ user, profile }) => {
   };
 
   return (
-    <div style={{ padding: '2rem 1.5rem', maxWidth: '1400px', margin: '0 auto', minHeight: '80vh' }}>
+    <div style={{ padding: '2rem 1.5rem', width: '100%', margin: '0 auto', minHeight: '80vh' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ margin: 0, fontSize: '1.8rem' }}>Campaigns</h1>
