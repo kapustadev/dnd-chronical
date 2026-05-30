@@ -524,6 +524,7 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
   const [friendResults, setFriendResults] = useState([]);
   const [searchDone, setSearchDone] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [charToDelete, setCharToDelete] = useState(null);
 
   const isMaster = profile?.role === 'Dungeon Master';
 
@@ -563,10 +564,8 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
     setShowAvatar(false);
   };
 
-  const deleteCharacter = async (charId) => {
-    if (!window.confirm('Delete this character?')) return;
-    await supabase.from('characters').delete().eq('id', charId);
-    setCharacters(prev => prev.filter(c => c.id !== charId));
+  const deleteCharacter = (char) => {
+    setCharToDelete(char);
   };
 
   const editCharacter = (char) => {
@@ -631,6 +630,24 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
   return (
     <div style={{ padding: '2rem 1.5rem', maxWidth: '80%', margin: '0 auto', minHeight: '80vh' }}>
       {showAvatar && <AvatarModal profile={profile} onSelect={handleAvatarSelect} onClose={() => setShowAvatar(false)} />}
+      
+      {charToDelete && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)' }} onClick={() => setCharToDelete(null)}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '16px', padding: '2rem', width: '90%', maxWidth: '400px', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+            <AlertCircle size={48} color="var(--accent-red)" style={{ margin: '0 auto 1rem' }} />
+            <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.2rem' }}>Delete Character?</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', margin: '0 0 1.5rem' }}>Are you sure you want to permanently delete <strong>{charToDelete.data?.name || charToDelete.name || 'this character'}</strong>? This action cannot be undone.</p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <button className="btn-secondary" style={{ flex: 1 }} onClick={() => setCharToDelete(null)}>Cancel</button>
+              <button className="btn-primary" style={{ flex: 1 }} onClick={async () => {
+                await supabase.from('characters').delete().eq('id', charToDelete.id);
+                setCharacters(prev => prev.filter(c => c.id !== charToDelete.id));
+                setCharToDelete(null);
+              }}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Profile Banner */}
       <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
@@ -751,7 +768,7 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
               {characters.map(char => (
-                <CharacterDashCard key={char.id} char={char} onEdit={() => editCharacter(char)} onDelete={() => deleteCharacter(char.id)} onDownload={() => downloadCharacter(char)} />
+                <CharacterDashCard key={char.id} char={char} onEdit={() => editCharacter(char)} onDelete={() => deleteCharacter(char)} onDownload={() => downloadCharacter(char)} />
               ))}
             </div>
           )}
