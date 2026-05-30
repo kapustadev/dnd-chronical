@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Sword, Heart, Activity, User, Book, Map as MapIcon, ChevronRight, Check, Music, Axe, Zap, Flame, Wind, Feather, Moon, Crosshair, Star, Hammer, Droplet, Sun } from 'lucide-react';
+import { Shield, Sword, Heart, Activity, User, Book, Map as MapIcon, Check, Music, Axe, Zap, Flame, Wind, Feather, Moon, Crosshair, Star, Hammer, Droplet, Sun, Search } from 'lucide-react';
 import './CharacterGenerator.css';
 import CharacterSheetPreview from './CharacterSheetPreview';
 import { supabase } from '../supabaseClient';
+
+const classImages = {
+  Bard: '/assets/images/class_bard.png', Barbarian: '/assets/images/class_barbarian.png',
+  Fighter: '/assets/images/class_fighter.png', Wizard: '/assets/images/class_wizard.png',
+  Druid: '/assets/images/class_druid.png', Cleric: '/assets/images/class_cleric.png',
+  Artificer: '/assets/images/class_artificer.png', Warlock: '/assets/images/class_warlock.png',
+  Monk: '/assets/images/class_monk.png', Paladin: '/assets/images/class_paladin.png',
+  Rogue: '/assets/images/class_rogue.png', Ranger: '/assets/images/class_ranger.png',
+  Sorcerer: '/assets/images/class_sorcerer.png',
+};
 
 // Character State Schema
 const initialCharacter = {
@@ -226,65 +236,54 @@ const CharacterGenerator = ({ user, onSave }) => {
   // -------------------------
   const renderSetup = () => (
     <div className="builder-step">
-      <h2>Ruleset & Basics</h2>
-      <div className="form-group">
-        <label>Ruleset Version</label>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button 
-            className={`btn-${char.ruleset === '2014' ? 'primary' : 'secondary'}`} 
-            onClick={() => updateChar('ruleset', '2014')}
-            style={{ flex: 1 }}
-          >D&D 2014</button>
-          <button 
-            className={`btn-${char.ruleset === '2024' ? 'primary' : 'secondary'}`} 
-            onClick={() => updateChar('ruleset', '2024')}
-            style={{ flex: 1 }}
-          >D&D 2024 (One D&D)</button>
+      <div className="form-section">
+        <div className="form-section-title">Ruleset Version</div>
+        <div className="ruleset-toggle">
+          <button className={`ruleset-btn ${char.ruleset === '2014' ? 'active' : ''}`} onClick={() => updateChar('ruleset', '2014')}>D&D 2014</button>
+          <button className={`ruleset-btn ${char.ruleset === '2024' ? 'active' : ''}`} onClick={() => updateChar('ruleset', '2024')}>D&D 2024 (One D&D)</button>
         </div>
       </div>
-      <div className="form-group mt-3">
-        <label>Character Name</label>
-        <input type="text" value={char.name} onChange={e => updateChar('name', e.target.value)} placeholder="e.g. Drizzt Do'Urden" className="input-styled" />
-      </div>
-      <div className="form-group mt-3">
-        <label>Player Name</label>
-        <input type="text" value={char.playerName} onChange={e => updateChar('playerName', e.target.value)} placeholder="Your name" className="input-styled" />
+
+      <div className="form-section">
+        <div className="form-section-title">Identity</div>
+        <div className="form-grid">
+          <div className="form-group">
+            <label>Character Name</label>
+            <input type="text" value={char.name} onChange={e => updateChar('name', e.target.value)} placeholder="e.g. Drizzt Do'Urden" />
+          </div>
+          <div className="form-group">
+            <label>Player Name</label>
+            <input type="text" value={char.playerName} onChange={e => updateChar('playerName', e.target.value)} placeholder="Your real name" />
+          </div>
+        </div>
       </div>
     </div>
   );
 
   const renderRace = () => (
     <div className="builder-step">
-      <h2>Select Race</h2>
       <div className="selection-grid">
         {raceData.map(r => {
           const isSelected = char.race === r.id;
           const Icon = r.icon;
           return (
-            <div 
-              key={r.id} 
-              className={`selection-card ${isSelected ? 'active' : ''}`}
-              onClick={() => updateChar('race', r.id)}
-              style={{ backgroundImage: `url(${r.image})` }}
-            >
+            <div key={r.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('race', r.id)} style={{ backgroundImage: `url(${r.image})` }}>
               <div className="card-overlay"></div>
+              {isSelected && <div className="card-selected-badge"><Check size={11} color="white" /></div>}
               <div className="card-content">
                 <div className="card-title-ru">{r.name}</div>
                 <div className="card-title-en">{r.subtitle}</div>
                 <div className="card-source">{r.source}</div>
               </div>
-              <div className="card-icon-wrapper">
-                <Icon size={64} className="card-icon" />
-              </div>
+              <div className="card-icon-wrapper"><Icon size={56} className="card-icon" /></div>
             </div>
           );
         })}
       </div>
-      
       {['Elf', 'Dwarf', 'Halfling'].includes(char.race) && (
-        <div style={{ marginTop: '2rem' }}>
-          <label>Select Subrace</label>
-          <select value={char.subrace} onChange={e => updateChar('subrace', e.target.value)} className="input-styled" style={{ marginTop: '0.5rem' }}>
+        <div className="subrace-section">
+          <label>Subrace</label>
+          <select value={char.subrace} onChange={e => updateChar('subrace', e.target.value)}>
             <option value="">Choose a Subrace...</option>
             {char.race === 'Elf' && <><option value="High Elf">High Elf</option><option value="Wood Elf">Wood Elf</option></>}
             {char.race === 'Dwarf' && <><option value="Hill Dwarf">Hill Dwarf</option><option value="Mountain Dwarf">Mountain Dwarf</option></>}
@@ -297,223 +296,260 @@ const CharacterGenerator = ({ user, onSave }) => {
 
   const renderClass = () => (
     <div className="builder-step">
-      <h2>Select Class</h2>
-      
-      <div className="selection-grid" style={{ marginBottom: '2rem' }}>
+      <div className="selection-grid" style={{ marginBottom: '1.5rem' }}>
         {classData.map(c => {
           const isSelected = char.className === c.id;
           const Icon = c.icon;
           return (
-            <div 
-              key={c.id} 
-              className={`selection-card ${isSelected ? 'active' : ''}`}
-              style={{ backgroundImage: `url(${c.image})` }}
-              onClick={() => updateChar('className', c.id)}
-            >
+            <div key={c.id} className={`selection-card ${isSelected ? 'active' : ''}`} style={{ backgroundImage: `url(${c.image})` }} onClick={() => updateChar('className', c.id)}>
               <div className="card-overlay"></div>
+              {isSelected && <div className="card-selected-badge"><Check size={11} color="white" /></div>}
               <div className="card-content">
                 <div className="card-title-ru">{c.name}</div>
                 <div className="card-title-en">{c.subtitle}</div>
                 <div className="card-source">{c.source}</div>
               </div>
-              <div className="card-icon-wrapper">
-                <Icon size={48} className="card-icon" />
-              </div>
+              <div className="card-icon-wrapper"><Icon size={44} className="card-icon" /></div>
             </div>
           );
         })}
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', maxWidth: '300px' }}>
-        <div style={{ flex: 1 }}>
-          <label>Level</label>
-          <input type="number" min="1" max="20" value={char.level} onChange={e => updateChar('level', parseInt(e.target.value) || 1)} className="input-styled" />
-        </div>
-      </div>
-      
-      <div className="form-group mt-3">
-        <label>Saving Throw Proficiencies</label>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {['str', 'dex', 'con', 'int', 'wis', 'cha'].map(ab => (
-            <div key={ab} 
-                 onClick={() => toggleSavingThrow(ab)}
-                 style={{ padding: '0.4rem 0.8rem', border: `1px solid ${char.savingThrows.includes(ab) ? 'var(--accent-red)' : '#333'}`, borderRadius: '4px', cursor: 'pointer', background: char.savingThrows.includes(ab) ? 'rgba(255,0,0,0.1)' : 'transparent' }}>
-              {ab.toUpperCase()}
+      <div className="form-section">
+        <div className="form-section-title">Class Options</div>
+        <div className="form-grid">
+          <div className="form-group">
+            <label>Character Level</label>
+            <input type="number" min="1" max="20" value={char.level} onChange={e => updateChar('level', parseInt(e.target.value) || 1)} />
+          </div>
+          <div className="form-group">
+            <label>Saving Throw Proficiencies</label>
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginTop: '0.2rem' }}>
+              {['str', 'dex', 'con', 'int', 'wis', 'cha'].map(ab => (
+                <div key={ab} onClick={() => toggleSavingThrow(ab)}
+                  style={{ padding: '0.4rem 0.8rem', border: `1.5px solid ${char.savingThrows.includes(ab) ? 'var(--accent-red)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '8px', cursor: 'pointer', background: char.savingThrows.includes(ab) ? 'rgba(220,38,38,0.12)' : 'rgba(255,255,255,0.03)', fontSize: '0.8rem', fontWeight: 700, transition: 'all 0.15s', color: char.savingThrows.includes(ab) ? 'white' : 'var(--text-muted)' }}>
+                  {ab.toUpperCase()}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>
   );
 
-  const renderAbilities = () => (
-    <div className="builder-step">
-      <h2>Ability Scores</h2>
-      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Set your core attributes. Modifiers will be calculated automatically.</p>
-      
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-        {Object.keys(char.abilities).map(ab => (
-          <div key={ab} style={{ background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', textAlign: 'center' }}>
-            <label style={{ display: 'block', textTransform: 'uppercase', fontWeight: 'bold', marginBottom: '0.5rem' }}>{ab}</label>
-            <input type="number" min="1" max="30" value={char.abilities[ab]} onChange={e => updateChar(`abilities.${ab}`, parseInt(e.target.value) || 0)} className="input-styled text-center" style={{ fontSize: '1.5rem', padding: '0.5rem' }} />
-            <div style={{ marginTop: '0.5rem', color: 'var(--accent-red)', fontWeight: 'bold' }}>
-              Mod: {formatMod(getModifier(char.abilities[ab]))}
-            </div>
+  const renderAbilities = () => {
+    const abilityNames = { str: 'Strength', dex: 'Dexterity', con: 'Constitution', int: 'Intelligence', wis: 'Wisdom', cha: 'Charisma' };
+    const abilityShort = { str: 'STR', dex: 'DEX', con: 'CON', int: 'INT', wis: 'WIS', cha: 'CHA' };
+    return (
+      <div className="builder-step">
+        <div className="form-section">
+          <div className="form-section-title">Core Attributes</div>
+          <div className="abilities-grid">
+            {Object.keys(char.abilities).map(ab => {
+              const mod = getModifier(char.abilities[ab]);
+              const modClass = mod > 0 ? 'positive' : mod < 0 ? 'negative' : '';
+              return (
+                <div key={ab} className="ability-card">
+                  <div className="ability-name">{abilityShort[ab]}</div>
+                  <div className={`ability-modifier ${modClass}`}>{formatMod(mod)}</div>
+                  <input type="number" min="1" max="30" value={char.abilities[ab]}
+                    onChange={e => updateChar(`abilities.${ab}`, parseInt(e.target.value) || 1)}
+                    className="ability-score-input" />
+                  <div className="ability-label">{abilityNames[ab]}</div>
+                </div>
+              );
+            })}
           </div>
-        ))}
+        </div>
+
+        <div className="form-section">
+          <div className="form-section-title">Skill Proficiencies</div>
+          <div className="skills-grid">
+            {Object.entries(skillMap).map(([skill, attr]) => {
+              const isProficient = char.proficiencies.includes(skill);
+              const mod = getModifier(char.abilities[attr]);
+              return (
+                <div key={skill} className={`skill-toggle ${isProficient ? 'active' : ''}`} onClick={() => toggleProficiency(skill)}>
+                  <div className="skill-checkbox">{isProficient && <Check size={10} color="white" />}</div>
+                  <div className="skill-toggle-name">{skill}</div>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{attr.toUpperCase()}</div>
+                  <div className="skill-toggle-mod">{formatMod(mod + (isProficient ? 2 : 0))}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderDescription = () => (
     <div className="builder-step">
-      <h2>Description & Background</h2>
-      <div className="form-group">
-        <label>Background</label>
-        <select value={char.background} onChange={e => updateChar('background', e.target.value)} className="input-styled">
-          <option value="">Choose...</option>
-          <option value="Acolyte">Acolyte</option>
-          <option value="Criminal">Criminal</option>
-          <option value="Folk Hero">Folk Hero</option>
-          <option value="Noble">Noble</option>
-          <option value="Soldier">Soldier</option>
-        </select>
+      <div className="form-section">
+        <div className="form-section-title">Background</div>
+        <div className="form-grid">
+          <div className="form-group">
+            <label>Background</label>
+            <select value={char.background} onChange={e => updateChar('background', e.target.value)}>
+              <option value="">Choose...</option>
+              <option value="Acolyte">Acolyte</option>
+              <option value="Criminal">Criminal / Spy</option>
+              <option value="Folk Hero">Folk Hero</option>
+              <option value="Noble">Noble</option>
+              <option value="Sage">Sage</option>
+              <option value="Soldier">Soldier</option>
+              <option value="Outlander">Outlander</option>
+              <option value="Hermit">Hermit</option>
+              <option value="Entertainer">Entertainer</option>
+              <option value="Guild Artisan">Guild Artisan</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Alignment</label>
+            <select value={char.alignment} onChange={e => updateChar('alignment', e.target.value)}>
+              <option value="">Choose...</option>
+              <option value="Lawful Good">Lawful Good</option>
+              <option value="Neutral Good">Neutral Good</option>
+              <option value="Chaotic Good">Chaotic Good</option>
+              <option value="Lawful Neutral">Lawful Neutral</option>
+              <option value="True Neutral">True Neutral</option>
+              <option value="Chaotic Neutral">Chaotic Neutral</option>
+              <option value="Lawful Evil">Lawful Evil</option>
+              <option value="Neutral Evil">Neutral Evil</option>
+              <option value="Chaotic Evil">Chaotic Evil</option>
+            </select>
+          </div>
+        </div>
       </div>
-      <div className="form-group mt-3">
-        <label>Alignment</label>
-        <select value={char.alignment} onChange={e => updateChar('alignment', e.target.value)} className="input-styled">
-          <option value="">Choose...</option>
-          <option value="Lawful Good">Lawful Good</option>
-          <option value="Neutral Good">Neutral Good</option>
-          <option value="Chaotic Good">Chaotic Good</option>
-          <option value="True Neutral">True Neutral</option>
-          <option value="Chaotic Evil">Chaotic Evil</option>
-        </select>
-      </div>
-      
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
-        <textarea placeholder="Personality Traits" value={char.personality} onChange={e => updateChar('personality', e.target.value)} className="input-styled" rows="3"></textarea>
-        <textarea placeholder="Ideals" value={char.ideals} onChange={e => updateChar('ideals', e.target.value)} className="input-styled" rows="3"></textarea>
-        <textarea placeholder="Bonds" value={char.bonds} onChange={e => updateChar('bonds', e.target.value)} className="input-styled" rows="3"></textarea>
-        <textarea placeholder="Flaws" value={char.flaws} onChange={e => updateChar('flaws', e.target.value)} className="input-styled" rows="3"></textarea>
+
+      <div className="form-section">
+        <div className="form-section-title">Personality</div>
+        <div className="personality-grid">
+          <div className="personality-box">
+            <div className="personality-box-label">Personality Traits</div>
+            <textarea placeholder="How does your character act, speak, or move?" value={char.personality} onChange={e => updateChar('personality', e.target.value)} />
+          </div>
+          <div className="personality-box">
+            <div className="personality-box-label">Ideals</div>
+            <textarea placeholder="What principles guide your character?" value={char.ideals} onChange={e => updateChar('ideals', e.target.value)} />
+          </div>
+          <div className="personality-box">
+            <div className="personality-box-label">Bonds</div>
+            <textarea placeholder="What ties your character to the world?" value={char.bonds} onChange={e => updateChar('bonds', e.target.value)} />
+          </div>
+          <div className="personality-box">
+            <div className="personality-box-label">Flaws</div>
+            <textarea placeholder="What weakness or vice does your character have?" value={char.flaws} onChange={e => updateChar('flaws', e.target.value)} />
+          </div>
+        </div>
       </div>
     </div>
   );
 
   const renderEquipment = () => (
     <div className="builder-step">
-      <h2>Equipment & Combat Stats</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-        <div>
-          <label>Armor Class (AC)</label>
-          <input type="number" value={char.ac} onChange={e => updateChar('ac', parseInt(e.target.value) || 0)} className="input-styled" />
-        </div>
-        <div>
-          <label>Max HP</label>
-          <input type="number" value={char.hp.max} onChange={e => updateChar('hp.max', parseInt(e.target.value) || 0)} className="input-styled" />
-        </div>
-        <div>
-          <label>Initiative Bonus</label>
-          <input type="number" value={char.initiative} onChange={e => updateChar('initiative', parseInt(e.target.value) || 0)} className="input-styled" />
-        </div>
-        <div>
-          <label>Speed (ft)</label>
-          <input type="number" value={char.speed} onChange={e => updateChar('speed', parseInt(e.target.value) || 0)} className="input-styled" />
+      <div className="form-section">
+        <div className="form-section-title">Combat Statistics</div>
+        <div className="combat-stats-grid">
+          {[
+            { label: 'Armor Class', field: 'ac', value: char.ac },
+            { label: 'Max HP', field: 'hp.max', value: char.hp.max },
+            { label: 'Initiative', field: 'initiative', value: char.initiative },
+            { label: 'Speed (ft)', field: 'speed', value: char.speed },
+          ].map(({ label, field, value }) => (
+            <div key={field} className="combat-stat-card">
+              <div className="combat-stat-label">{label}</div>
+              <input type="number" value={value} onChange={e => updateChar(field, parseInt(e.target.value) || 0)} className="combat-stat-input" />
+            </div>
+          ))}
         </div>
       </div>
-      
-      <div className="form-group mt-3">
-        <label>Features & Traits</label>
-        <textarea placeholder="List your class/race features..." value={char.features} onChange={e => updateChar('features', e.target.value)} className="input-styled" rows="4"></textarea>
-      </div>
-      <div className="form-group mt-3">
-        <label>Inventory & Gold</label>
-        <textarea placeholder="Starting equipment..." value={char.equipment} onChange={e => updateChar('equipment', e.target.value)} className="input-styled" rows="4"></textarea>
+
+      <div className="form-section">
+        <div className="form-section-title">Features & Equipment</div>
+        <div className="form-grid">
+          <div className="form-group">
+            <label>Features & Traits</label>
+            <textarea placeholder="List class/race features, special abilities..." value={char.features} onChange={e => updateChar('features', e.target.value)} rows="5" />
+          </div>
+          <div className="form-group">
+            <label>Inventory & Gold</label>
+            <textarea placeholder="Starting equipment, coins, items..." value={char.equipment} onChange={e => updateChar('equipment', e.target.value)} rows="5" />
+          </div>
+        </div>
       </div>
     </div>
   );
 
   const renderSpells = () => {
     const filteredSpells = spellsDb.filter(s => s.name.toLowerCase().includes(spellSearch.toLowerCase()));
-    
-    // Group spells by level
     const spellsByLevel = {};
     filteredSpells.forEach(s => {
       if (!spellsByLevel[s.level]) spellsByLevel[s.level] = [];
       spellsByLevel[s.level].push(s);
     });
-
     const selectedCantripsCount = char.spells.filter(s => s.level === 0).length;
     const selectedSpellsCount = char.spells.filter(s => s.level > 0).length;
+    const lvl = char.level || 1;
+    const cantripLimit = lvl <= 4 ? 2 : lvl <= 9 ? 3 : lvl <= 17 ? 4 : 5;
+    const spellLimit = lvl <= 2 ? 3 : lvl <= 4 ? 5 : lvl <= 6 ? 7 : lvl <= 8 ? 9 : 11;
 
     return (
       <div className="builder-step">
-        <h2>Spells Library</h2>
-        
         {!char.className ? (
-          <p style={{ color: 'var(--text-muted)' }}>Please select a class first in the Class tab.</p>
+          <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+            <Zap size={40} style={{ opacity: 0.2, margin: '0 auto 1rem' }} />
+            <p>Select a class first to see available spells.</p>
+          </div>
         ) : ['Fighter', 'Rogue', 'Barbarian', 'Monk'].includes(char.className) ? (
-          <p style={{ color: 'var(--text-muted)' }}>Your chosen class ({char.className}) does not typically cast spells.</p>
-        ) : spellsDb.length === 0 && !loadingSpells ? (
-          <p style={{ color: 'var(--text-muted)' }}>No spells found for this class in the SRD database.</p>
+          <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+            <Shield size={40} style={{ opacity: 0.2, margin: '0 auto 1rem' }} />
+            <p><strong>{char.className}</strong> is a non-spellcasting class. Skip this step.</p>
+          </div>
+        ) : loadingSpells ? (
+          <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Loading spells from the D&D 5e API...</div>
         ) : (
           <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
-              <div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Select spells for your {char.className}.</p>
-                <p style={{ fontSize: '0.8rem', color: 'var(--accent-red)', marginTop: '0.2rem' }}>
-                  Selected: {selectedCantripsCount} Cantrips | {selectedSpellsCount} Spells
-                </p>
+            <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '1.2rem', flexWrap: 'wrap' }}>
+              <div className={`spell-limit-badge ${selectedCantripsCount >= cantripLimit ? 'at-limit' : ''}`}>
+                <Star size={12} /> Cantrips: {selectedCantripsCount} / {cantripLimit}
               </div>
-              <input 
-                type="text" 
-                placeholder="Search spells..." 
-                value={spellSearch} 
-                onChange={e => setSpellSearch(e.target.value)} 
-                className="input-styled" 
-                style={{ maxWidth: '300px' }}
-              />
+              <div className={`spell-limit-badge ${selectedSpellsCount >= spellLimit ? 'at-limit' : ''}`}>
+                <Zap size={12} /> Spells: {selectedSpellsCount} / {spellLimit}
+              </div>
             </div>
-            
-            {loadingSpells ? (
-              <div style={{ textAlign: 'center', padding: '2rem' }}>Loading spells from API...</div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingRight: '0.5rem' }}>
-                
-                {Object.keys(spellsByLevel).sort((a,b) => parseInt(a) - parseInt(b)).map(levelStr => {
-                  const level = parseInt(levelStr);
-                  const title = level === 0 ? 'Cantrips (Заговоры)' : `Level ${level} Spells`;
-                  const spellList = spellsByLevel[level];
-                  
-                  return (
-                    <div key={level}>
-                      <h3 style={{ fontSize: '1.1rem', marginBottom: '0.8rem', color: 'var(--accent-red)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.3rem' }}>{title}</h3>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0.5rem' }}>
-                        {spellList.map(spell => {
-                          const isSelected = char.spells.find(s => s.index === spell.index);
-                          return (
-                            <div 
-                              key={spell.index} 
-                              onClick={() => toggleSpell(spell)}
-                              style={{ 
-                                display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-                                padding: '0.8rem', background: isSelected ? 'rgba(255,0,0,0.1)' : 'rgba(0,0,0,0.4)', 
-                                border: `1px solid ${isSelected ? 'var(--accent-red)' : 'var(--border-color)'}`, 
-                                borderRadius: '6px', cursor: 'pointer' 
-                              }}
-                            >
-                              <div style={{ fontWeight: 600 }}>{spell.name}</div>
-                              {isSelected && <Check size={16} color="var(--accent-red)" />}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-                
-              </div>
-            )}
+
+            <div className="spell-search-bar" style={{ position: 'relative' }}>
+              <span className="spell-search-icon"><Search size={14} /></span>
+              <input type="text" placeholder="Search spells..." value={spellSearch} onChange={e => setSpellSearch(e.target.value)} className="spell-search-input" />
+            </div>
+
+            {Object.keys(spellsByLevel).sort((a,b) => parseInt(a) - parseInt(b)).map(levelStr => {
+              const level = parseInt(levelStr);
+              const title = level === 0 ? 'Cantrips' : `Level ${level}`;
+              const spellList = spellsByLevel[level];
+              return (
+                <div key={level} className="spell-level-group">
+                  <div className="spell-level-header">
+                    {title}
+                    <span className="spell-level-badge">{spellList.length} spells</span>
+                  </div>
+                  <div className="spells-list">
+                    {spellList.map(spell => {
+                      const isSelected = char.spells.find(s => s.index === spell.index);
+                      return (
+                        <div key={spell.index} className={`spell-chip ${isSelected ? 'selected' : ''}`} onClick={() => toggleSpell(spell)}>
+                          <div className="spell-chip-dot"></div>
+                          <span>{spell.name}</span>
+                          {isSelected && <Check size={11} color="var(--accent-red)" style={{ marginLeft: 'auto', flexShrink: 0 }} />}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </>
         )}
       </div>
@@ -521,22 +557,60 @@ const CharacterGenerator = ({ user, onSave }) => {
   };
 
   const renderReview = () => {
+    const classImg = classImages[char.className] || '/assets/images/epic_dnd_background.png';
     return (
-      <div className="builder-step" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>Review & Export</h2>
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2rem' }}>Review your character sheet below. Save it to your account to access it from the Dashboard.</p>
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button className="btn-primary" onClick={saveCharacter} disabled={saving} style={{ minWidth: '160px' }}>
-            {saving ? '⏳ Saving...' : saveSuccess ? '✅ Saved!' : (editingId ? '💾 Update Character' : '💾 Save Character')}
-          </button>
+      <div className="builder-step">
+        <div className="review-hero">
+          <div className="review-char-art" style={{ backgroundImage: `url(${classImg})` }} />
+          <div className="review-char-info">
+            <h2>{char.name || 'Unnamed Hero'}</h2>
+            <div className="review-tags">
+              {char.race && <span className="review-tag">{char.race}</span>}
+              {char.className && <span className="review-tag highlight">{char.className}</span>}
+              {char.level && <span className="review-tag">Level {char.level}</span>}
+              {char.background && <span className="review-tag">{char.background}</span>}
+              {char.alignment && <span className="review-tag">{char.alignment}</span>}
+            </div>
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            <button className="btn-primary" onClick={saveCharacter} disabled={saving} style={{ minWidth: '160px' }}>
+              {saving ? '⏳ Saving...' : saveSuccess ? '✅ Saved!' : (editingId ? '💾 Update' : '💾 Save Character')}
+            </button>
+          </div>
         </div>
-
-        <div style={{ width: '100%', height: '75vh', border: '1px solid var(--border-color)', borderRadius: 'var(--border-radius-large)', overflow: 'auto', background: '#e0e0e0', position: 'relative', marginBottom: '2rem' }}>
+        <div className="pdf-preview-wrapper">
           <CharacterSheetPreview char={char} />
         </div>
       </div>
     );
   };
+
+  // ── Step config ────────────────────────────────────────
+  const stepConfig = [
+    { id: 'setup',       label: 'Setup',        icon: User,       getValue: () => char.name || null },
+    { id: 'race',        label: 'Race',          icon: Moon,       getValue: () => char.race || null },
+    { id: 'class',       label: 'Class',         icon: Shield,     getValue: () => char.className ? `${char.className} Lv${char.level}` : null },
+    { id: 'abilities',   label: 'Abilities',     icon: Activity,   getValue: () => null },
+    { id: 'description', label: 'Background',    icon: Book,       getValue: () => char.background || null },
+    { id: 'equipment',   label: 'Equipment',     icon: Sword,      getValue: () => null },
+    { id: 'spells',      label: 'Spells',        icon: Zap,        getValue: () => char.spells.length ? `${char.spells.length} selected` : null },
+    { id: 'review',      label: 'Review',        icon: Star,       getValue: () => null },
+  ];
+
+  const stepBanners = {
+    setup:       { eyebrow: 'Step 1',   title: 'Character Setup',     subtitle: 'Begin your legend. Name your character and choose the ruleset.' },
+    race:        { eyebrow: 'Step 2',   title: 'Choose Your Race',    subtitle: 'Your ancestry shapes your natural abilities and backstory.' },
+    class:       { eyebrow: 'Step 3',   title: 'Choose Your Class',   subtitle: 'Your class defines your role in the party and combat style.' },
+    abilities:   { eyebrow: 'Step 4',   title: 'Ability Scores',      subtitle: 'Distribute your scores. These drive nearly every roll you make.' },
+    description: { eyebrow: 'Step 5',   title: 'Background & Story',  subtitle: 'Give your character a history, personality, and moral code.' },
+    equipment:   { eyebrow: 'Step 6',   title: 'Combat & Equipment',  subtitle: 'Define your combat stats and starting inventory.' },
+    spells:      { eyebrow: 'Step 7',   title: 'Spellbook',           subtitle: 'Choose cantrips and prepared spells from the official list.' },
+    review:      { eyebrow: 'Step 8',   title: 'Review & Save',       subtitle: 'Inspect your full sheet and save your character to the cloud.' },
+  };
+
+  const currentIdx = stepConfig.findIndex(s => s.id === activeStep);
+  const progressPct = Math.round((Math.min(currentIdx, highestUnlockedStep) / (stepConfig.length - 1)) * 100);
+  const banner = stepBanners[activeStep] || {};
 
   const renderActiveStep = () => {
     switch(activeStep) {
@@ -552,66 +626,106 @@ const CharacterGenerator = ({ user, onSave }) => {
     }
   };
 
-  // -------------------------
-  // MAIN RENDER
-  // -------------------------
+  // ── MAIN RENDER ────────────────────────────────────────
   return (
     <div className="character-generator-layout">
-      <div className="builder-panel">
-        <div className="builder-stepper">
-          {steps.map((step, idx) => {
+
+      {/* ── Sidebar ── */}
+      <aside className="builder-sidebar">
+        <div className="sidebar-header">
+          <div className="sidebar-title">Character Builder</div>
+          <div className="sidebar-char-name">{char.name || 'Unnamed Hero'}</div>
+        </div>
+
+        <div className="sidebar-progress-track">
+          <div className="progress-label">
+            <span>Progress</span>
+            <span>{progressPct}%</span>
+          </div>
+          <div className="progress-bar-bg">
+            <div className="progress-bar-fill" style={{ width: `${progressPct}%` }} />
+          </div>
+        </div>
+
+        {/* Class preview card */}
+        {char.className && (
+          <div className="sidebar-char-card">
+            <div className="sidebar-char-image" style={{ backgroundImage: `url(${classImages[char.className] || '/assets/images/epic_dnd_background.png'})` }} />
+            <div className="sidebar-char-meta">
+              {[char.race, char.className, char.level ? `Lv ${char.level}` : null].filter(Boolean).join(' · ')}
+            </div>
+          </div>
+        )}
+
+        <nav className="sidebar-steps">
+          {stepConfig.map((step, idx) => {
             const isLocked = idx > highestUnlockedStep;
+            const isDone = idx < currentIdx;
+            const isActive = activeStep === step.id;
+            const Icon = step.icon;
+            const val = step.getValue();
             return (
-              <div 
-                key={step.id} 
-                className={`step-item ${activeStep === step.id ? 'active' : ''}`}
-                style={{ 
-                  cursor: isLocked ? 'not-allowed' : 'pointer',
-                  opacity: isLocked ? 0.5 : 1
-                }}
-                onClick={() => {
-                  if (!isLocked) setActiveStep(step.id);
-                }}
+              <div
+                key={step.id}
+                className={`sidebar-step ${isActive ? 'active' : ''} ${isDone ? 'done' : ''} ${isLocked ? 'locked' : ''}`}
+                onClick={() => { if (!isLocked) setActiveStep(step.id); }}
               >
-                {step.label}
+                <div className="step-number">
+                  {isDone ? <Check size={12} /> : <span>{idx + 1}</span>}
+                </div>
+                <div className="step-info">
+                  <div className="step-name">{step.label}</div>
+                  {val && <div className="step-value">{val}</div>}
+                </div>
               </div>
             );
           })}
+        </nav>
+      </aside>
+
+      {/* ── Main ── */}
+      <main className="builder-main">
+        {/* Step Banner */}
+        <div className="step-banner" data-step-num={currentIdx + 1}>
+          <div className="step-eyebrow">{banner.eyebrow}</div>
+          <h1 className="step-title">{banner.title}</h1>
+          <p className="step-subtitle">{banner.subtitle}</p>
         </div>
-        
+
+        {/* Step Content */}
         <div className="builder-content">
           {renderActiveStep()}
         </div>
-        
+
+        {/* Footer Nav */}
         <div className="builder-footer">
-          <button 
-            className="btn-secondary" 
-            disabled={activeStep === steps[0].id}
-            onClick={() => setActiveStep(steps[Math.max(0, steps.findIndex(s => s.id === activeStep) - 1)].id)}
+          <button
+            className="btn-secondary"
+            disabled={currentIdx === 0}
+            onClick={() => setActiveStep(stepConfig[Math.max(0, currentIdx - 1)].id)}
           >
-            Previous
+            ← Previous
           </button>
-          
-          {activeStep === steps[steps.length - 1].id ? (
+
+          <span className="footer-step-hint">{currentIdx + 1} of {stepConfig.length}</span>
+
+          {currentIdx === stepConfig.length - 1 ? (
             <button className="btn-primary" onClick={saveCharacter} disabled={saving}>
-              {saving ? '⏳ Saving...' : saveSuccess ? '✅ Saved!' : (editingId ? '✅ Update Character' : '✅ Save Character')}
+              {saving ? '⏳ Saving...' : saveSuccess ? '✅ Saved!' : (editingId ? '💾 Update' : '💾 Save Character')}
             </button>
           ) : (
-            <button 
+            <button
               className="btn-primary"
               onClick={() => {
-                const currentIdx = steps.findIndex(s => s.id === activeStep);
-                if (currentIdx === highestUnlockedStep) {
-                  setHighestUnlockedStep(currentIdx + 1);
-                }
-                setActiveStep(steps[currentIdx + 1].id);
+                if (currentIdx === highestUnlockedStep) setHighestUnlockedStep(currentIdx + 1);
+                setActiveStep(stepConfig[currentIdx + 1].id);
               }}
             >
-              Next <ChevronRight size={16} style={{ marginLeft: '0.4rem' }} />
+              Next → 
             </button>
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 };
