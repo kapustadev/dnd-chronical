@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Sword, Heart, Activity, User, Book, Map as MapIcon, ChevronRight, Check, Music, Axe, Zap, Flame, Wind, Feather, Moon, Crosshair, Star, Hammer, Droplet, Sun } from 'lucide-react';
 import './CharacterGenerator.css';
 import CharacterSheetPreview from './CharacterSheetPreview';
+import { supabase } from '../supabaseClient';
 
 // Character State Schema
 const initialCharacter = {
@@ -105,13 +106,20 @@ const raceData = [
   { id: 'Tabaxi', name: 'Tabaxi', subtitle: 'Feline Agility', source: "Volo's Guide", icon: Wind, image: '/assets/images/epic_dnd_background.png' },
 ];
 
-const CharacterGenerator = () => {
-  const [char, setChar] = useState(initialCharacter);
+const CharacterGenerator = ({ user, onSave }) => {
+  // Check if we're editing an existing character
+  const editingRaw = localStorage.getItem('editingCharacter');
+  const editingChar = editingRaw ? JSON.parse(editingRaw) : null;
+  const editingId = editingChar?.id || null;
+
+  const [char, setChar] = useState(editingChar?.data || initialCharacter);
   const [activeStep, setActiveStep] = useState('setup');
-  const [highestUnlockedStep, setHighestUnlockedStep] = useState(0);
+  const [highestUnlockedStep, setHighestUnlockedStep] = useState(editingChar ? 7 : 0);
   const [spellsDb, setSpellsDb] = useState([]);
   const [loadingSpells, setLoadingSpells] = useState(false);
   const [spellSearch, setSpellSearch] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const steps = [
     { id: 'setup', label: '1. Setup' },
@@ -157,6 +165,21 @@ const CharacterGenerator = () => {
   useEffect(() => {
     setChar(prev => ({ ...prev, spells: [] }));
   }, [char.className]);
+
+  const saveCharacter = async () => {
+    if (!user) { alert('Please log in to save characters.'); return; }
+    setSaving(true);
+    const charName = char.name || 'Unnamed Hero';
+    if (editingId) {
+      await supabase.from('characters').update({ name: charName, data: char, updated_at: new Date().toISOString() }).eq('id', editingId);
+    } else {
+      await supabase.from('characters').insert({ user_id: user.id, name: charName, data: char });
+    }
+    localStorage.removeItem('editingCharacter');
+    setSaving(false);
+    setSaveSuccess(true);
+    setTimeout(() => { setSaveSuccess(false); if (onSave) onSave(); }, 1500);
+  };
 
   const updateChar = (field, value) => {
     setChar(prev => {
@@ -501,9 +524,11 @@ const CharacterGenerator = () => {
     return (
       <div className="builder-step" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>Review & Export</h2>
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2rem' }}>Review your character sheet below. You can save your character to your account or download the PDF to print.</p>
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-          <button className="btn-primary" onClick={() => alert("Save functionality coming soon!")}>💾 Save Character</button>
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2rem' }}>Review your character sheet below. Save it to your account to access it from the Dashboard.</p>
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <button className="btn-primary" onClick={saveCharacter} disabled={saving} style={{ minWidth: '160px' }}>
+            {saving ? '⏳ Saving...' : saveSuccess ? '✅ Saved!' : (editingId ? '💾 Update Character' : '💾 Save Character')}
+          </button>
         </div>
 
         <div style={{ width: '100%', height: '75vh', border: '1px solid var(--border-color)', borderRadius: 'var(--border-radius-large)', overflow: 'auto', background: '#e0e0e0', position: 'relative', marginBottom: '2rem' }}>
@@ -568,7 +593,9 @@ const CharacterGenerator = () => {
           </button>
           
           {activeStep === steps[steps.length - 1].id ? (
-            <button className="btn-primary" onClick={() => alert("Character Saved!")}>Complete Build</button>
+            <button className="btn-primary" onClick={saveCharacter} disabled={saving}>
+              {saving ? '⏳ Saving...' : saveSuccess ? '✅ Saved!' : (editingId ? '✅ Update Character' : '✅ Save Character')}
+            </button>
           ) : (
             <button 
               className="btn-primary"
