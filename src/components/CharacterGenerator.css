@@ -20,6 +20,7 @@
 @media (max-width: 900px) {
   .character-generator-layout {
     grid-template-columns: 1fr;
+    width: 100% !important;
   }
   .builder-sidebar {
     display: none;
