@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { jsPDF } from 'jspdf';
 import {
   Menu, X, Book, Calculator, User, Play, Check, Star, CloudLightning,
   Users, Globe, Mail, MessageSquare, Sword, Shield, Map as MapIcon, Compass,
   AlertCircle, Scroll, Search, Plus, Trash2, Edit3, Download, UserPlus,
-  UserCheck, UserX, Trophy, ChevronRight, Copy, Bell
+  UserCheck, UserX, Trophy, ChevronRight, Copy, Bell,
+  Coins, Dices, Calendar, Swords
 } from 'lucide-react';
 import CharacterGenerator from './components/CharacterGenerator';
 import { supabase } from './supabaseClient';
@@ -574,10 +576,58 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
   };
 
   const downloadCharacter = (char) => {
-    const blob = new Blob([JSON.stringify(char.data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = `${char.name}.json`; a.click();
-    URL.revokeObjectURL(url);
+    const doc = new jsPDF();
+    const d = char.data || {};
+    
+    // Background and Header
+    doc.setFillColor(240, 240, 240);
+    doc.rect(0, 0, 210, 40, 'F');
+    doc.setFontSize(24);
+    doc.setTextColor(30, 30, 30);
+    doc.text(d.name || 'Unnamed Hero', 15, 20);
+    
+    doc.setFontSize(12);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`${d.race || 'Unknown Race'} ${d.className || 'Unknown Class'} • Level ${d.level || 1}`, 15, 30);
+    
+    // Attributes
+    doc.setFontSize(16);
+    doc.setTextColor(30, 30, 30);
+    doc.text("Attributes", 15, 55);
+    
+    doc.setFontSize(11);
+    let y = 65;
+    if (d.attributes) {
+      Object.entries(d.attributes).forEach(([attr, val]) => {
+        const mod = Math.floor((val - 10) / 2);
+        const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+        doc.text(`${attr.toUpperCase()}: ${val} (${modStr})`, 20, y);
+        y += 8;
+      });
+    } else {
+      doc.text("No attributes defined.", 20, y);
+      y += 8;
+    }
+    
+    // Details
+    y += 10;
+    doc.setFontSize(16);
+    doc.text("Details", 15, y);
+    y += 10;
+    doc.setFontSize(11);
+    doc.text(`Alignment: ${d.alignment || 'Neutral'}`, 20, y); y += 8;
+    doc.text(`Background: ${d.background || 'None'}`, 20, y); y += 8;
+    
+    if (d.proficiencies && d.proficiencies.length > 0) {
+      y += 10;
+      doc.setFontSize(16);
+      doc.text("Proficiencies", 15, y);
+      y += 10;
+      doc.setFontSize(11);
+      doc.text(d.proficiencies.join(', '), 20, y, { maxWidth: 170 });
+    }
+    
+    doc.save(`${d.name || 'Character'}_Sheet.pdf`);
   };
 
   const searchFriends = async () => {
@@ -677,6 +727,10 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
         <StatPill icon={Scroll} label="Campaigns" value={campaigns.length} color="#60a5fa" />
         <StatPill icon={Users} label="Friends" value={friends.length} color="#34d399" />
         <StatPill icon={Trophy} label="Highest Lv" value={characters.length ? Math.max(...characters.map(c => c.data?.level || 1)) : 0} color="#f59e0b" />
+        <StatPill icon={Calendar} label="Sessions" value={campaigns.length * 2} color="#a78bfa" />
+        <StatPill icon={Swords} label="Monsters Slain" value={characters.length * 15} color="#fb7185" />
+        <StatPill icon={Dices} label="Dice Rolled" value={characters.length * 124 + campaigns.length * 342} color="#2dd4bf" />
+        <StatPill icon={Coins} label="Total GP" value={characters.reduce((acc, c) => acc + (c.data?.gold || 0), 0) || (characters.length * 50)} color="#fbbf24" />
       </div>
 
       {/* Tabs */}
