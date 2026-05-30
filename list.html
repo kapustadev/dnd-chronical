@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Лист Персонажа D&D</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨 Надрукувати</button>
+
+<!-- ===== PAGE 1 ===== -->
+<div class="page" id="page-1">
+
+  <!-- HEADER -->
+  <div class="p1-header">
+    <div class="p1-logo">
+      <div class="p1-logo-title">DUNGEONS &amp; DRAGONS®</div>
+      <input type="text" class="p1-logo-name">
+    </div>
+    <div class="p1-header-fields">
+      <div class="hf"><input type="text"><span class="lbl">Клас і рівень</span></div>
+      <div class="hf"><input type="text"><span class="lbl">Передісторія</span></div>
+      <div class="hf"><input type="text"><span class="lbl">Ім'я гравця</span></div>
+      <div class="hf"><input type="text"><span class="lbl">Раса</span></div>
+      <div class="hf"><input type="text"><span class="lbl">Світогляд</span></div>
+      <div class="hf"><input type="text"><span class="lbl">Досвід/До рівня</span></div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="p1-body">
+
+    <!-- LEFT -->
+    <div class="col-left">
+      <div class="top-stat"><input type="text"><span class="lbl">Бонус Майстерності</span></div>
+      <div class="top-stat"><input type="text"><span class="lbl">Натхнення</span></div>
+      <div class="top-stat"><input type="text"><span class="lbl">Пасивна Мудрість (Сприйняття)</span></div>
+
+      <!-- СИЛА -->
+      <div class="ab-group">
+        <div class="ab-box">
+          <input type="text" class="ab-mod"><input type="text" class="ab-score">
+          <span class="lbl ab-name">СИЛА</span>
+        </div>
+        <div class="ab-skills">
+          <div class="sk save"><div class="diamond"></div><input type="text" class="sk-val"> Рятівний кидок</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Атлетика</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Залякування</div>
+        </div>
+      </div>
+
+      <!-- ЛОВКІСТЬ -->
+      <div class="ab-group">
+        <div class="ab-box">
+          <input type="text" class="ab-mod"><input type="text" class="ab-score">
+          <span class="lbl ab-name">ЛОВКІСТЬ</span>
+        </div>
+        <div class="ab-skills">
+          <div class="sk save"><div class="diamond"></div><input type="text" class="sk-val"> Рятівний кидок</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Акробатика</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Спритність рук</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Скритність</div>
+        </div>
+      </div>
+
+      <!-- СТАТУРА -->
+      <div class="ab-group">
+        <div class="ab-box">
+          <input type="text" class="ab-mod"><input type="text" class="ab-score">
+          <span class="lbl ab-name">СТАТУРА</span>
+        </div>
+        <div class="ab-skills">
+          <div class="sk save"><div class="diamond"></div><input type="text" class="sk-val"> Рятівний кидок</div>
+        </div>
+      </div>
+
+      <!-- ІНТЕЛЕКТ -->
+      <div class="ab-group">
+        <div class="ab-box">
+          <input type="text" class="ab-mod"><input type="text" class="ab-score">
+          <span class="lbl ab-name">ІНТЕЛЕКТ</span>
+        </div>
+        <div class="ab-skills">
+          <div class="sk save"><div class="diamond"></div><input type="text" class="sk-val"> Рятівний кидок</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Магія</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Історія</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Обстеження</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Природа</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Релігія</div>
+        </div>
+      </div>
+
+      <!-- МУДРІСТЬ -->
+      <div class="ab-group">
+        <div class="ab-box">
+          <input type="text" class="ab-mod"><input type="text" class="ab-score">
+          <span class="lbl ab-name">МУДРІСТЬ</span>
+        </div>
+        <div class="ab-skills">
+          <div class="sk save"><div class="diamond"></div><input type="text" class="sk-val"> Рятівний кидок</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Догляд тварин</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Аналіз поведінки</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Виживання</div>
+          <div class="sk highlighted"><div class="circle"></div><input type="text" class="sk-val"> Уважність</div>
+        </div>
+      </div>
+
+      <!-- ХАРИЗМА -->
+      <div class="ab-group">
+        <div class="ab-box">
+          <input type="text" class="ab-mod"><input type="text" class="ab-score">
+          <span class="lbl ab-name">ХАРИЗМА</span>
+        </div>
+        <div class="ab-skills">
+          <div class="sk save"><div class="diamond"></div><input type="text" class="sk-val"> Рятівний кидок</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Обман</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Артистичність</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Виступ</div>
+          <div class="sk"><div class="circle"></div><input type="text" class="sk-val"> Переконання</div>
+        </div>
+      </div>
+    </div><!-- /col-left -->
+
+    <!-- MIDDLE -->
+    <div class="col-mid">
+
+      <!-- RED COMBAT BOX -->
+      <div class="combat-box">
+        <div class="combat-row1">
+          <div class="avatar-box">👤</div>
+          <div class="ac-box"><input type="text" class="ab-score"></div>
+          <div class="stat-cell"><input type="text"><span class="lbl">Ініціатива</span></div>
+          <div class="stat-cell"><input type="text"><span class="lbl">Швидкість</span></div>
+        </div>
+
+        <!-- HP -->
+        <div class="hp-row">
+          <div class="hp-header">❤ &nbsp; ХП</div>
+          <div class="hp-body">
+            <div class="hp-cell"><span class="lbl">Всього</span><input type="text"></div>
+            <div class="hp-cell"><span class="lbl">Залишилося</span><input type="text"></div>
+            <div style="flex:1;border-left:2px solid rgba(0,0,0,0.3);padding:4px;">
+              <div class="hp-header" style="background:#555;border-radius:4px 4px 0 0;">Кубик хітів</div>
+              <div class="hp-cell"><span class="lbl">Кубик хітів</span><input type="text"></div>
+              <div class="hp-cell"><span class="lbl">Витрачено</span><input type="text"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ТИМЧАСОВІ ХІТИ -->
+        <div style="margin-top:4px;border:1.5px solid rgba(0,0,0,0.2);border-radius:6px;overflow:hidden;">
+          <div class="hp-header" style="background:#444;">ТИМЧАСОВІ ХІТИ</div>
+          <div style="padding:4px 6px;"><input type="text"></div>
+        </div>
+
+        <!-- DEATH SAVES -->
+        <div style="margin-top:5px;border:1.5px solid var(--border);border-radius:8px;padding:5px;background:var(--parchment-light);">
+          <div style="display:flex;align-items:center;gap:6px;justify-content:center;">
+            <div class="circle"></div><div class="circle"></div><div class="circle"></div>
+            <span style="font-size:18px;">💀</span>
+            <div class="circle"></div><div class="circle"></div><div class="circle"></div>
+          </div>
+          <div class="lbl" style="text-align:center;margin-top:2px;">Рятівні кидки від смерті</div>
+        </div>
+      </div>
+
+      <!-- ATTACKS BOX -->
+      <div class="attacks-box">
+        <div class="attacks-title">
+          <span class="sword-icon">⚔</span>
+          <span class="attacks-title-text">Атаки зброєю</span>
+        </div>
+        <table class="attacks-table">
+          <thead>
+            <tr>
+              <th style="width:38%">Назва</th>
+              <th style="width:18%">Бонус АТК</th>
+              <th style="width:26%">Урон</th>
+              <th style="width:10%">Тид</th>
+              <th style="width:8%">Дист.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SPELL MINI -->
+      <div class="spell-mini-box">
+        <div class="spell-mini-row">
+          <span class="spell-mini-label">Базова хар-ка заклинань</span>
+          <input type="text">
+        </div>
+        <div class="spell-mini-row">
+          <div>
+            <span class="spell-mini-label">СК. РЯТ. КИДКУ</span>
+            <div style="font-size:6.5px;color:var(--gray);">= СК рятівного кидка + модифікатор</div>
+          </div>
+          <input type="text">
+        </div>
+        <div class="spell-mini-row">
+          <div>
+            <span class="spell-mini-label">МАГ. БОН. АТАКИ</span>
+            <div style="font-size:6.5px;color:var(--gray);">= Бон. майст-ності + модифікатор</div>
+          </div>
+          <input type="text">
+        </div>
+      </div>
+
+    </div><!-- /col-mid -->
+
+    <!-- RIGHT -->
+    <div class="col-right">
+      <div class="coins-icon">🪙</div>
+      <div class="money-row"><span class="money-lbl">М</span><input type="text"></div>
+      <div class="money-row"><span class="money-lbl">С</span><input type="text"></div>
+      <div class="money-row"><span class="money-lbl">Е</span><input type="text"></div>
+      <div class="money-row"><span class="money-lbl">З</span><input type="text"></div>
+      <div class="money-row"><span class="money-lbl">П</span><input type="text"></div>
+    </div>
+
+  </div><!-- /p1-body -->
+
+  <!-- FOOTER NOTE -->
+  <div class="p1-footer">
+    <textarea placeholder="Риси, особливості, обладнання..."></textarea>
+  </div>
+
+</div><!-- /page-1 -->
+
+
+<!-- ===== PAGE 2 ===== -->
+<div class="page" id="page-2">
+
+  <!-- HEADER -->
+  <div class="p2-header">
+    <div class="p2-logo">
+      <div class="p2-logo-title">D&amp;D</div>
+      <span class="p2-char-name-lbl">Ім'я персонажа</span>
+      <input type="text" class="p2-char-name">
+    </div>
+    <div class="p2-header-fields">
+      <div class="p2-hf">
+        <input type="text">
+        <span class="lbl">Базова хар-ка заклинань</span>
+      </div>
+      <div class="p2-hf">
+        <input type="text">
+        <span class="lbl">СК Спаскидка</span>
+        <span class="p2-hf-note">+ 8 + Бон. Майстерності + Мод.</span>
+      </div>
+      <div class="p2-hf">
+        <input type="text">
+        <span class="lbl">Маг. Бон. Атаки</span>
+        <span class="p2-hf-note">+ Бон. Майстерності + Мод.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLOTS TABLE -->
+  <div class="slots-wrapper">
+    <table class="slots-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>1-й</th><th>2-й</th><th>3-й</th><th>4-й</th><th>5-й</th>
+          <th>6-й</th><th>7-й</th><th>8-й</th><th>9-й</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="slots-lbl-cell">Відомі заклинання / Заклинань</td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+        </tr>
+        <tr>
+          <td class="slots-lbl-cell">Всього</td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+        </tr>
+        <tr>
+          <td class="slots-lbl-cell">Витрачено</td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+          <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="slots-footer">КОМІРКИ ЗАКЛИНАНЬ</div>
+  </div>
+
+  <!-- SPELL COLUMNS -->
+  <div class="spell-cols">
+
+    <!-- COL 1: 0, 2, 6, 9 -->
+    <div>
+      <!-- 0-й (Заговори) -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge">0-й</div>
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><input type="text"></div>
+          <div class="sl-spell-row"><input type="text"></div>
+          <div class="sl-spell-row"><input type="text"></div>
+          <div class="sl-spell-row"><input type="text"></div>
+          <div class="sl-spell-row"><input type="text"></div>
+          <div class="sl-spell-row"><input type="text"></div>
+          <div class="sl-spell-row"><input type="text"></div>
+          <div class="sl-spell-row"><input type="text"></div>
+        </div>
+      </div>
+      <!-- 2-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>2-й</span></div>
+
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+        </div>
+      </div>
+      <!-- 6-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>6-й</span></div>
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+        </div>
+      </div>
+      <!-- 9-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>9-й</span></div>
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: 1, 4, 7 -->
+    <div>
+      <!-- 1-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge">1</div>
+
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+        </div>
+      </div>
+      <!-- 4-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>4-й</span></div>
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+        </div>
+      </div>
+      <!-- 7-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>7-й</span></div>
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 3: 3, 5, 8 -->
+    <div>
+      <!-- 3-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>3-й</span></div>
+
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle-red"></div><input type="text"></div>
+        </div>
+      </div>
+      <!-- 5-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>5-й</span></div>
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+        </div>
+      </div>
+      <!-- 8-й -->
+      <div class="sl-panel">
+        <div class="sl-header">
+          <div class="sl-badge diamond-shape"><span>8-й</span></div>
+        </div>
+        <div class="sl-spells">
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+          <div class="sl-spell-row"><div class="circle"></div><input type="text"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /spell-cols -->
+
+  <div class="watermark">design by kapusta.dev</div>
+
+</div><!-- /page-2 -->
+
+</body>
+</html>

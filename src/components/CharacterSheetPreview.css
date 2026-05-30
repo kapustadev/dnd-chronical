@@ -1,0 +1,331 @@
+/* CharacterSheetPreview.css */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;600&display=swap');
+
+.sheet-preview-container {
+  font-family: 'Lora', serif;
+  color: #000;
+  background: #ccc;
+  padding: 2rem 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.print-btn {
+  background: #b22222;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.print-btn:hover {
+  background: #8b1a1a;
+}
+
+.page {
+  width: 210mm;
+  height: 297mm;
+  background: #fff;
+  padding: 15mm;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-sizing: border-box;
+  position: relative;
+  page-break-after: always;
+}
+
+/* Base inputs */
+.page input[type="text"], .page textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #333;
+  font-family: 'Lora', serif;
+  font-size: 12px;
+  color: #000;
+  width: 100%;
+  padding: 2px;
+  box-sizing: border-box;
+}
+.page input[type="text"]:focus, .page textarea:focus {
+  outline: none;
+  border-bottom: 2px solid #b22222;
+}
+.lbl {
+  font-size: 8px;
+  text-transform: uppercase;
+  color: #555;
+  font-weight: bold;
+  display: block;
+}
+
+/* Page 1 Header */
+.p1-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.p1-logo {
+  flex: 1;
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 8px 0 0 8px;
+}
+.p1-logo-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #b22222;
+}
+.p1-logo-name {
+  font-size: 16px;
+  margin-top: 10px;
+}
+.p1-header-fields {
+  flex: 2;
+  border: 2px solid #ccc;
+  border-radius: 0 8px 8px 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  background: #fdfdfd;
+}
+.hf {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* Page 1 Body */
+.p1-body {
+  display: flex;
+  gap: 15px;
+  height: calc(100% - 150px);
+}
+.col-left {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.col-mid {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.col-right {
+  width: 30%;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* Left Column Stats */
+.top-stat {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  text-align: center;
+}
+.top-stat input { text-align: center; font-size: 16px; font-weight: bold; border-bottom: none; }
+.ab-group {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px;
+  background: #fafafa;
+}
+.ab-box {
+  width: 60px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ab-mod {
+  font-size: 20px !important;
+  font-weight: bold;
+  text-align: center;
+  border: none !important;
+}
+.ab-score {
+  width: 30px !important;
+  text-align: center;
+  border: 1px solid #ccc !important;
+  border-radius: 20px;
+  margin: 2px 0;
+}
+.ab-name {
+  font-size: 7px;
+}
+.ab-skills {
+  flex: 1;
+  font-size: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sk {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.sk-val {
+  width: 20px !important;
+  border-bottom: 1px solid #aaa !important;
+  text-align: center;
+}
+.circle { width: 8px; height: 8px; border: 1px solid #000; border-radius: 50%; }
+.circle.filled { background: #000; }
+.diamond { width: 8px; height: 8px; border: 1px solid #000; transform: rotate(45deg); margin: 0 2px;}
+
+/* Middle Column Stats */
+.combat-box {
+  background: #fdfdfd;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+}
+.combat-row1 {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.avatar-box, .ac-box, .stat-cell {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px;
+  text-align: center;
+  flex: 1;
+}
+.ac-box input, .stat-cell input {
+  text-align: center; font-size: 18px; font-weight: bold; border: none !important;
+}
+
+.hp-row {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.hp-header {
+  background: #ccc;
+  color: #333;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  padding: 3px;
+}
+.hp-body {
+  display: flex;
+}
+.hp-cell {
+  flex: 1;
+  padding: 5px;
+  text-align: center;
+}
+.hp-cell input { text-align: center; font-size: 14px; font-weight: bold; }
+
+.attacks-box {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  flex: 1;
+}
+.attacks-title {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
+  color: #b22222;
+}
+.attacks-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.attacks-table th {
+  font-size: 8px; color: #555; text-align: left; padding-bottom: 2px;
+}
+.attacks-table td { padding: 2px; }
+
+/* Page 2 */
+.p2-header {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.p2-logo {
+  flex: 1;
+  border-bottom: 2px solid #ccc;
+}
+.p2-logo-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #b22222;
+}
+.p2-header-fields {
+  flex: 2;
+  display: flex;
+  gap: 10px;
+}
+.p2-hf {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+.p2-hf input { text-align: center; font-size: 18px; font-weight: bold; }
+.slots-wrapper { margin-bottom: 20px; }
+.slots-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 10px; }
+.slots-table th, .slots-table td { border: 1px solid #ddd; padding: 4px; }
+.slots-footer { background: #eee; padding: 4px; text-align: center; font-size: 10px; font-weight: bold; }
+
+.spell-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+}
+.sl-panel {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+.sl-header {
+  background: #b22222;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 2px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+.sl-spell-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+
+@media print {
+  .sheet-preview-container {
+    background: white;
+    padding: 0;
+  }
+  .print-btn { display: none; }
+  .page {
+    box-shadow: none;
+    margin: 0;
+  }
+}
