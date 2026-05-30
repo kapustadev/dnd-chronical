@@ -3,7 +3,7 @@ import {
   Menu, X, Book, Calculator, User, Play, Check, Star, CloudLightning,
   Users, Globe, Mail, MessageSquare, Sword, Shield, Map as MapIcon, Compass,
   AlertCircle, Scroll, Search, Plus, Trash2, Edit3, Download, UserPlus,
-  UserCheck, UserX, Trophy, ChevronRight, Copy
+  UserCheck, UserX, Trophy, ChevronRight, Copy, Bell
 } from 'lucide-react';
 import CharacterGenerator from './components/CharacterGenerator';
 import { supabase } from './supabaseClient';
@@ -46,10 +46,33 @@ const Header = ({ currentView, setView, user, profile, handleLogout }) => {
   const [currentLang, setCurrentLang] = useState('English');
   const [systemOpen, setSystemOpen] = useState(false);
   const [currentSystem, setCurrentSystem] = useState('D&D 5e');
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
   const languages = ['English', 'Español', 'Français', 'Deutsch', 'Italiano', 'Русский'];
   const systems = ['D&D 5e', 'Pathfinder 2e'];
   const handleNav = (v) => { setView(v); setMenuOpen(false); };
   const isAppView = ['cabinet','characters','campaigns'].includes(currentView);
+
+  useEffect(() => {
+    if (user) loadNotifications();
+  }, [user]);
+
+  const loadNotifications = async () => {
+    const { data } = await supabase.from('notifications').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(10);
+    if (data) setNotifications(data);
+  };
+
+  const markAsRead = async (n) => {
+    if (!n.is_read) {
+      await supabase.from('notifications').update({ is_read: true }).eq('id', n.id);
+      setNotifications(prev => prev.map(x => x.id === n.id ? { ...x, is_read: true } : x));
+    }
+    setNotificationsOpen(false);
+    if (n.type === 'friend_request') setView('cabinet');
+  };
+
+  const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
     <div className={`header-wrapper ${menuOpen ? 'nav-active' : ''}`}>
@@ -98,14 +121,40 @@ const Header = ({ currentView, setView, user, profile, handleLogout }) => {
         </div>
         <div className="nav-actions">
           {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+              <div style={{ position: 'relative' }}>
+                <div style={{ cursor: 'pointer', position: 'relative' }} onClick={() => setNotificationsOpen(!notificationsOpen)}>
+                  <Bell size={20} color="var(--text-muted)" />
+                  {unreadCount > 0 && <div style={{ position: 'absolute', top: '-4px', right: '-4px', background: 'var(--accent-red)', color: 'white', fontSize: '0.6rem', fontWeight: 'bold', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{unreadCount}</div>}
+                </div>
+                {notificationsOpen && (
+                  <div style={{ position: 'absolute', top: '100%', right: '-10px', marginTop: '10px', width: '320px', background: 'var(--bg-section)', border: '1px solid var(--border-color)', borderRadius: '12px', zIndex: 300, padding: '0.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', borderBottom: '1px solid var(--border-color)', marginBottom: '0.5rem' }}>
+                      <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Notifications</span>
+                      {unreadCount > 0 && <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => notifications.forEach(n => markAsRead(n))}>Mark all read</span>}
+                    </div>
+                    {notifications.length === 0 ? (
+                      <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem' }}>No new notifications</div>
+                    ) : (
+                      <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                        {notifications.map(n => (
+                          <div key={n.id} onClick={() => markAsRead(n)} style={{ padding: '0.75rem', borderRadius: '8px', background: n.is_read ? 'transparent' : 'rgba(228, 7, 18, 0.05)', cursor: 'pointer', marginBottom: '4px', borderLeft: n.is_read ? '3px solid transparent' : '3px solid var(--accent-red)' }}>
+                            <div style={{ fontWeight: 600, fontSize: '0.85rem', marginBottom: '2px', color: n.is_read ? 'var(--text-muted)' : 'white' }}>{n.title}</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{n.message}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }} onClick={() => handleNav('cabinet')}>
-                <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: profile?.avatar_url ? `url(${profile.avatar_url}) center/cover` : 'var(--accent-red)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: profile?.avatar_url ? `url(${profile.avatar_url}) center/cover` : 'var(--accent-red)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   {!profile?.avatar_url && <User size={16} color="white" />}
                 </div>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{profile?.username}</span>
               </div>
-              <button className="btn-secondary" onClick={handleLogout}>Log Out</button>
+              <button className="btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }} onClick={handleLogout}>Log Out</button>
             </div>
           ) : (
             <>
@@ -542,11 +591,23 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
 
   const sendFriendRequest = async (toId) => {
     await supabase.from('friend_requests').insert({ from_id: user.id, to_id: toId });
+    await supabase.from('notifications').insert({
+      user_id: toId,
+      type: 'friend_request',
+      title: 'New Friend Request',
+      message: `${profile.username} sent you a friend request.`
+    });
     setFriendResults(prev => prev.map(u => u.id === toId ? { ...u, requestSent: true } : u));
   };
 
   const acceptFriend = async (req) => {
     await supabase.from('friend_requests').update({ status: 'accepted' }).eq('id', req.id);
+    await supabase.from('notifications').insert({
+      user_id: req.from_id,
+      type: 'friend_accepted',
+      title: 'Friend Request Accepted',
+      message: `${profile.username} accepted your friend request.`
+    });
     setFriendRequests(prev => prev.filter(r => r.id !== req.id));
     setFriends(prev => [...prev, req.from_profile]);
   };
@@ -775,7 +836,15 @@ const CampaignsScreen = ({ user, profile }) => {
     const { data: camp } = await supabase.from('campaigns').select('*').eq('invite_code', code).single();
     if (!camp) return alert('Campaign not found. Check the invite code.');
     const { error } = await supabase.from('campaign_players').insert({ campaign_id: camp.id, user_id: user.id });
-    if (!error) { loadCampaigns(); setJoinCode(''); alert(`Joined "${camp.name}" successfully!`); }
+    if (!error) { 
+      await supabase.from('notifications').insert({
+        user_id: camp.owner_id,
+        type: 'campaign_joined',
+        title: 'New Player Joined',
+        message: `${profile.username} joined your campaign "${camp.name}".`
+      });
+      loadCampaigns(); setJoinCode(''); alert(`Joined "${camp.name}" successfully!`); 
+    }
     else alert('Already in this campaign.');
   };
 
