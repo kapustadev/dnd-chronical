@@ -42,12 +42,11 @@ async function updateProfile(userId, updates) {
 }
 
 // ─── Header ──────────────────────────────────────────────────────────────────
-const Header = ({ currentView, setView, user, profile, handleLogout }) => {
+const Header = ({ currentView, setView, user, profile, handleLogout, currentSystem, setCurrentSystem }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState('English');
   const [systemOpen, setSystemOpen] = useState(false);
-  const [currentSystem, setCurrentSystem] = useState('D&D 5e');
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
@@ -1017,6 +1016,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [currentSystem, setCurrentSystem] = useState('D&D 5e');
 
   // Sync hash
   useEffect(() => { window.location.hash = view; }, [view]);
@@ -1094,7 +1094,7 @@ function App() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Header currentView={view} setView={setViewGuarded} user={user} profile={profile} handleLogout={handleLogout} />
+      <Header currentView={view} setView={setViewGuarded} user={user} profile={profile} handleLogout={handleLogout} currentSystem={currentSystem} setCurrentSystem={setCurrentSystem} />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {renderContent()}
       </div>
