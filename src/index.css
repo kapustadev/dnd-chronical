@@ -175,6 +175,12 @@ h1, h2, h3, h4 {
   align-items: center;
 }
 
+.nav-profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
 /* Hamburger Menu (Mobile) */
 .hamburger {
   display: none;
@@ -659,6 +665,17 @@ h1, h2, h3, h4 {
     border-top: 1px solid var(--border-color);
   }
 
+  .nav-profile-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  
+  .nav-actions button {
+    width: 100%;
+  }
+
   .nav-active .nav-links, .nav-active .nav-actions {
     right: 0;
   }
@@ -673,7 +690,6 @@ h1, h2, h3, h4 {
   }
 
   .btn-primary, .btn-secondary {
-    width: 100%;
-    padding: 0.6rem;
+    padding: 0.6rem 1rem;
   }
 }

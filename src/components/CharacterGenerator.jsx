@@ -130,6 +130,7 @@ const CharacterGenerator = ({ user, onSave }) => {
   const [spellSearch, setSpellSearch] = useState('');
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const steps = [
     { id: 'setup', label: '1. Setup' },
@@ -631,10 +632,15 @@ const CharacterGenerator = ({ user, onSave }) => {
     <div className="character-generator-layout">
 
       {/* ── Sidebar ── */}
-      <aside className="builder-sidebar">
-        <div className="sidebar-header">
-          <div className="sidebar-title">Character Builder</div>
-          <div className="sidebar-char-name">{char.name || 'Unnamed Hero'}</div>
+      <aside className={`builder-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+        <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--accent-red)', fontWeight: 800, letterSpacing: '0.1em' }}>CHARACTER BUILDER</div>
+            <div style={{ fontWeight: 700, fontSize: '1.2rem', marginTop: '0.2rem' }}>{char.name || 'Unnamed Hero'}</div>
+          </div>
+          <button className="mobile-menu-close" onClick={() => setMobileMenuOpen(false)} style={{ background: 'transparent', border: 'none', color: 'white', display: 'none' }}>
+            <X size={24} />
+          </button>
         </div>
 
         <div className="sidebar-progress-track">
@@ -667,8 +673,13 @@ const CharacterGenerator = ({ user, onSave }) => {
             return (
               <div
                 key={step.id}
-                className={`sidebar-step ${isActive ? 'active' : ''} ${isDone ? 'done' : ''} ${isLocked ? 'locked' : ''}`}
-                onClick={() => { if (!isLocked) setActiveStep(step.id); }}
+                className={`sidebar-step ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''} ${isDone ? 'done' : ''}`}
+                onClick={() => {
+                  if (!isLocked) {
+                    setActiveStep(step.id);
+                    setMobileMenuOpen(false);
+                  }
+                }}
               >
                 <div className="step-number">
                   {isDone ? <Check size={12} /> : <span>{idx + 1}</span>}
@@ -683,11 +694,21 @@ const CharacterGenerator = ({ user, onSave }) => {
         </nav>
       </aside>
 
+      {/* Mobile Sidebar Overlay Close */}
+      {mobileMenuOpen && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 299 }} className="mobile-only-overlay" onClick={() => setMobileMenuOpen(false)} />
+      )}
+
       {/* ── Main ── */}
       <main className="builder-main">
         {/* Step Banner */}
         <div className="step-banner" data-step-num={currentIdx + 1}>
-          <div className="step-eyebrow">{banner.eyebrow}</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+            <div className="step-eyebrow" style={{ margin: 0 }}>{banner.eyebrow}</div>
+            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(true)} style={{ background: 'transparent', border: 'none', color: 'white', display: 'none' }}>
+              <Menu size={24} />
+            </button>
+          </div>
           <h1 className="step-title">{banner.title}</h1>
           <p className="step-subtitle">{banner.subtitle}</p>
         </div>

@@ -971,7 +971,7 @@ const CampaignsScreen = ({ user, profile }) => {
             <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>{isMaster ? 'Create your first campaign!' : 'Enter an invite code to join a campaign.'}</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' }}>
             {campaigns.map(camp => (
               <div key={camp.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '14px', padding: '1.5rem', position: 'relative' }}>
                 {camp.owner_id === user.id && (

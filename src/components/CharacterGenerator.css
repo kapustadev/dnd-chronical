@@ -32,6 +32,20 @@
     z-index: 300;
     background: rgba(0,0,0,0.95);
   }
+  .mobile-menu-toggle, .mobile-menu-close {
+    display: block !important;
+  }
+  .step-banner {
+    padding: 1.5rem !important;
+  }
+  .step-banner::before {
+    font-size: 5rem !important;
+    right: 1rem !important;
+    top: 0.5rem !important;
+  }
+  .step-title {
+    font-size: 1.5rem !important;
+  }
 }
 
 /* ── Sidebar ────────────────────────────────────────── */
