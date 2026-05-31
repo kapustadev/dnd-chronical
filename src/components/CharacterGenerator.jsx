@@ -267,8 +267,7 @@ const CharacterGenerator = ({ user, onSave }) => {
         {raceData.map(r => {
           const isSelected = char.race === r.id;
           return (
-            <div key={r.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('race', r.id)}>
-              <div className="card-bg" style={{ backgroundImage: `url(${r.image})` }}></div>
+            <div key={r.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('race', r.id)} style={{ backgroundImage: `url(${r.image})` }}>
               <div className="card-overlay"></div>
               {isSelected && <div className="card-selected-badge"><Check size={11} color="white" /></div>}
               <div className="card-content">
@@ -300,8 +299,7 @@ const CharacterGenerator = ({ user, onSave }) => {
         {classData.map(c => {
           const isSelected = char.className === c.id;
           return (
-            <div key={c.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('className', c.id)}>
-              <div className="card-bg" style={{ backgroundImage: `url(${c.image})` }}></div>
+            <div key={c.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('className', c.id)} style={{ backgroundImage: `url(${c.image})` }}>
               <div className="card-overlay"></div>
               {isSelected && <div className="card-selected-badge"><Check size={11} color="white" /></div>}
               <div className="card-content">

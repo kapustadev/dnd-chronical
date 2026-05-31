@@ -745,7 +745,7 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
       {loading && <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Loading...</div>}
 
       {!loading && activeTab === 'overview' && (
-        <div className="grid-2" style={{ gap: '1rem' }}>
+        <div className="grid-2" style={{ gap: '1rem', width: '100%' }}>
           {/* Recent chars */}
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '14px', padding: '1.2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -830,7 +830,7 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
       )}
 
       {!loading && activeTab === 'friends' && (
-        <div className="grid-2" style={{ gap: '1rem' }}>
+        <div className="grid-2" style={{ gap: '1rem', width: '100%' }}>
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '14px', padding: '1.2rem' }}>
             <h3 style={{ margin: '0 0 1rem', fontSize: '1rem' }}>Find Players</h3>
             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
