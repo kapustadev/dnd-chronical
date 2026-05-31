@@ -52,7 +52,7 @@ const Header = ({ currentView, setView, user, profile, handleLogout }) => {
   const [notifications, setNotifications] = useState([]);
 
   const languages = ['English', 'Español', 'Français', 'Deutsch', 'Italiano', 'Русский'];
-  const systems = ['D&D 5e', 'Pathfinder 2e'];
+  const systems = ['D&D 5e', 'Pathfinder 1e'];
   const handleNav = (v) => { setView(v); setMenuOpen(false); };
   const isAppView = ['cabinet','characters','campaigns'].includes(currentView);
 
@@ -99,7 +99,7 @@ const Header = ({ currentView, setView, user, profile, handleLogout }) => {
 
       <div className="main-nav">
         <div className="logo-container" onClick={() => handleNav('home')}>
-          <img src="/DnD-Symbol.png" alt="D&D" className="logo-image" style={{ objectPosition: 'top' }} />
+          <img src={currentSystem.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem} className="logo-image" style={{ objectPosition: 'top', filter: currentSystem.includes('Pathfinder') ? 'invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.2))' : 'none', height: currentSystem.includes('Pathfinder') ? '35px' : 'auto' }} />
           <div className="logo-text">CHRONICLE</div>
         </div>
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
@@ -320,7 +320,7 @@ const ContactPage = () => (
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-        <div style={{ display: 'flex', gap: '0.8rem' }}>
+<div style={{ display: 'flex', gap: '0.8rem' }}>
           <input type="text" placeholder="Your Name" style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.5)', color: 'white' }} />
           <input type="email" placeholder="Your Email" style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.5)', color: 'white' }} />
         </div>
@@ -331,12 +331,12 @@ const ContactPage = () => (
   </section>
 );
 
-const Footer = () => (
+const Footer = ({ currentSystem }) => (
   <footer className="footer-section">
     <div className="footer-grid">
       <div className="footer-column">
         <h4 style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <img src="/DnD-Symbol.png" style={{ width: '24px', objectFit: 'contain' }} alt="D&D" /> Chronicle
+          <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} style={{ width: '24px', objectFit: 'contain', filter: currentSystem?.includes('Pathfinder') ? 'invert(1)' : 'none' }} alt={currentSystem || "D&D"} /> Chronicle
         </h4>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', lineHeight: 1.5 }}>The ultimate digital companion for the world's greatest roleplaying game.</p>
       </div>
@@ -349,7 +349,7 @@ const Footer = () => (
 );
 
 // ─── Auth Form ────────────────────────────────────────────────────────────────
-const AuthCard = ({ isLogin, setView, onAuthSuccess }) => {
+const AuthCard = ({ isLogin, setView, onAuthSuccess, currentSystem }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -376,7 +376,7 @@ const AuthCard = ({ isLogin, setView, onAuthSuccess }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: '1rem' }}>
       <form onSubmit={submit} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 'var(--border-radius-large)', padding: '2rem', width: '100%', maxWidth: '340px', textAlign: 'center' }}>
-        <img src="/DnD-Symbol.png" alt="D&D" style={{ width: '60px', margin: '0 auto 1rem', display: 'block' }} />
+        <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem || "D&D"} style={{ height: currentSystem?.includes('Pathfinder') ? '40px' : '60px', margin: '0 auto 1rem', display: 'block', filter: currentSystem?.includes('Pathfinder') ? 'invert(1)' : 'none' }} />
         <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>{isLogin ? 'Welcome Back' : 'Join Chronicle'}</h2>
         {error && (
           <div style={{ background: 'rgba(255,0,0,0.1)', color: '#ff6b6b', padding: '0.6rem', borderRadius: '6px', marginBottom: '1rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
@@ -742,7 +742,12 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
         ))}
       </div>
 
-      {loading && <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Loading...</div>}
+      {loading && (
+        <div className="grid-2" style={{ gap: '1rem', width: '100%' }}>
+          <div className="skeleton" style={{ height: '240px', borderRadius: '14px' }} />
+          <div className="skeleton" style={{ height: '240px', borderRadius: '14px' }} />
+        </div>
+      )}
 
       {!loading && activeTab === 'overview' && (
         <div className="grid-2" style={{ gap: '1rem', width: '100%' }}>
@@ -964,7 +969,11 @@ const CampaignsScreen = ({ user, profile }) => {
         </div>
       )}
 
-      {loading ? <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Loading...</div> : (
+      {loading ? (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' }}>
+          {[1, 2, 3, 4].map(i => <div key={i} className="skeleton" style={{ height: '180px', borderRadius: '14px' }} />)}
+        </div>
+      ) : (
         campaigns.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '5rem', background: 'var(--bg-card)', borderRadius: '14px', border: '1px dashed var(--border-color)' }}>
             <Scroll size={48} style={{ opacity: 0.2, margin: '0 auto 1rem' }} />
@@ -1058,7 +1067,7 @@ function App() {
   if (authLoading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <div style={{ textAlign: 'center' }}>
-        <img src="/DnD-Symbol.png" alt="D&D" style={{ width: '60px', marginBottom: '1rem', opacity: 0.6 }} />
+        <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem || "D&D"} style={{ height: currentSystem?.includes('Pathfinder') ? '40px' : '60px', marginBottom: '1rem', opacity: 0.6, filter: currentSystem?.includes('Pathfinder') ? 'invert(1)' : 'none' }} />
         <p style={{ color: 'var(--text-muted)' }}>Loading Chronicle...</p>
       </div>
     </div>
@@ -1070,15 +1079,15 @@ function App() {
       case 'pricing': return <PricingPage setView={setViewGuarded} />;
       case 'faq': return <FaqPage />;
       case 'contact': return <ContactPage />;
-      case 'login': return <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('cabinet')} />;
-      case 'register': return <AuthCard isLogin={false} setView={setView} onAuthSuccess={() => setView('cabinet')} />;
-      case 'cabinet': return user ? <CabinetScreen setView={setViewGuarded} user={user} profile={profile} setProfile={setProfile} /> : <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('cabinet')} />;
+      case 'login': return <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('cabinet')} currentSystem={currentSystem} />;
+      case 'register': return <AuthCard isLogin={false} setView={setView} onAuthSuccess={() => setView('cabinet')} currentSystem={currentSystem} />;
+      case 'cabinet': return user ? <CabinetScreen setView={setViewGuarded} user={user} profile={profile} setProfile={setProfile} /> : <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('cabinet')} currentSystem={currentSystem} />;
       case 'characters': return user ? (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '2rem 1rem' }}>
           <CharacterGenerator user={user} onSave={() => setView('cabinet')} />
         </div>
-      ) : <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('characters')} />;
-      case 'campaigns': return user ? <CampaignsScreen user={user} profile={profile} /> : <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('campaigns')} />;
+      ) : <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('characters')} currentSystem={currentSystem} />;
+      case 'campaigns': return user ? <CampaignsScreen user={user} profile={profile} /> : <AuthCard isLogin={true} setView={setView} onAuthSuccess={() => setView('campaigns')} currentSystem={currentSystem} />;
       default: return <LandingPage setView={setViewGuarded} />;
     }
   };
@@ -1089,7 +1098,7 @@ function App() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {renderContent()}
       </div>
-      <Footer />
+      <Footer currentSystem={currentSystem} />
     </div>
   );
 }
