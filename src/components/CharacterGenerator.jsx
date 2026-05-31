@@ -266,9 +266,9 @@ const CharacterGenerator = ({ user, onSave }) => {
       <div className="selection-grid">
         {raceData.map(r => {
           const isSelected = char.race === r.id;
-          const Icon = r.icon;
           return (
-            <div key={r.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('race', r.id)} style={{ backgroundImage: `url(${r.image})` }}>
+            <div key={r.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('race', r.id)}>
+              <div className="card-bg" style={{ backgroundImage: `url(${r.image})` }}></div>
               <div className="card-overlay"></div>
               {isSelected && <div className="card-selected-badge"><Check size={11} color="white" /></div>}
               <div className="card-content">
@@ -276,7 +276,6 @@ const CharacterGenerator = ({ user, onSave }) => {
                 <div className="card-title-en">{r.subtitle}</div>
                 <div className="card-source">{r.source}</div>
               </div>
-              <div className="card-icon-wrapper"><Icon size={56} className="card-icon" /></div>
             </div>
           );
         })}
@@ -300,9 +299,9 @@ const CharacterGenerator = ({ user, onSave }) => {
       <div className="selection-grid" style={{ marginBottom: '1.5rem' }}>
         {classData.map(c => {
           const isSelected = char.className === c.id;
-          const Icon = c.icon;
           return (
-            <div key={c.id} className={`selection-card ${isSelected ? 'active' : ''}`} style={{ backgroundImage: `url(${c.image})` }} onClick={() => updateChar('className', c.id)}>
+            <div key={c.id} className={`selection-card ${isSelected ? 'active' : ''}`} onClick={() => updateChar('className', c.id)}>
+              <div className="card-bg" style={{ backgroundImage: `url(${c.image})` }}></div>
               <div className="card-overlay"></div>
               {isSelected && <div className="card-selected-badge"><Check size={11} color="white" /></div>}
               <div className="card-content">
@@ -310,7 +309,6 @@ const CharacterGenerator = ({ user, onSave }) => {
                 <div className="card-title-en">{c.subtitle}</div>
                 <div className="card-source">{c.source}</div>
               </div>
-              <div className="card-icon-wrapper"><Icon size={44} className="card-icon" /></div>
             </div>
           );
         })}
