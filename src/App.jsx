@@ -334,8 +334,9 @@ const Footer = ({ currentSystem }) => (
   <footer className="footer-section">
     <div className="footer-grid">
       <div className="footer-column">
-        <h4 style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <img src={currentSystem?.includes('Pathfinder') ? '/pathfinder-seeklogo.svg' : '/DnD-Symbol.png'} style={{ height: '24px', width: currentSystem?.includes('Pathfinder') ? '100px' : '24px', objectFit: 'contain' }} alt={currentSystem || "D&D"} /> Chronicle
+        <h4 style={{ color: 'var(--text-main)', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.4rem', margin: '0 0 1rem 0' }}>
+          <img src={currentSystem?.includes('Pathfinder') ? '/pathfinder-seeklogo.svg' : '/DnD-Symbol.png'} style={{ height: '24px', width: currentSystem?.includes('Pathfinder') ? '100px' : '24px', objectFit: 'contain' }} alt={currentSystem || "D&D"} />
+          <span>Chronicle</span>
         </h4>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', lineHeight: 1.5 }}>The ultimate digital companion for the world's greatest roleplaying game.</p>
       </div>
