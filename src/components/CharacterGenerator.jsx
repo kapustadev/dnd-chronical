@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Sword, Heart, Activity, User, Book, Map as MapIcon, Check, Music, Axe, Zap, Flame, Wind, Feather, Moon, Crosshair, Star, Hammer, Droplet, Sun, Search } from 'lucide-react';
+import { Shield, Sword, Heart, Activity, User, Book, Map as MapIcon, Check, Music, Axe, Zap, Flame, Wind, Feather, Moon, Crosshair, Star, Hammer, Droplet, Sun, Search, Menu, X } from 'lucide-react';
 import './CharacterGenerator.css';
 import CharacterSheetPreview from './CharacterSheetPreview';
 import { supabase } from '../supabaseClient';
