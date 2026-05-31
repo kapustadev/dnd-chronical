@@ -98,7 +98,7 @@ const Header = ({ currentView, setView, user, profile, handleLogout, currentSyst
 
       <div className="main-nav">
         <div className="logo-container" onClick={() => handleNav('home')}>
-          <img src={currentSystem.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem} className="logo-image" style={{ objectPosition: 'top', filter: currentSystem.includes('Pathfinder') ? 'invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.2))' : 'none', height: currentSystem.includes('Pathfinder') ? '35px' : 'auto' }} />
+          <img src={currentSystem.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem} className="logo-image" style={{ objectPosition: 'top', filter: currentSystem.includes('Pathfinder') ? 'drop-shadow(0 0 10px rgba(255,255,255,0.2))' : 'none', height: currentSystem.includes('Pathfinder') ? '35px' : 'auto' }} />
           <div className="logo-text">CHRONICLE</div>
         </div>
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
@@ -335,7 +335,7 @@ const Footer = ({ currentSystem }) => (
     <div className="footer-grid">
       <div className="footer-column">
         <h4 style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} style={{ width: '24px', objectFit: 'contain', filter: currentSystem?.includes('Pathfinder') ? 'invert(1)' : 'none' }} alt={currentSystem || "D&D"} /> Chronicle
+          <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} style={{ width: '24px', objectFit: 'contain' }} alt={currentSystem || "D&D"} /> Chronicle
         </h4>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', lineHeight: 1.5 }}>The ultimate digital companion for the world's greatest roleplaying game.</p>
       </div>
@@ -375,7 +375,7 @@ const AuthCard = ({ isLogin, setView, onAuthSuccess, currentSystem }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: '1rem' }}>
       <form onSubmit={submit} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 'var(--border-radius-large)', padding: '2rem', width: '100%', maxWidth: '340px', textAlign: 'center' }}>
-        <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem || "D&D"} style={{ height: currentSystem?.includes('Pathfinder') ? '40px' : '60px', margin: '0 auto 1rem', display: 'block', filter: currentSystem?.includes('Pathfinder') ? 'invert(1)' : 'none' }} />
+        <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem || "D&D"} style={{ height: currentSystem?.includes('Pathfinder') ? '40px' : '60px', margin: '0 auto 1rem', display: 'block' }} />
         <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>{isLogin ? 'Welcome Back' : 'Join Chronicle'}</h2>
         {error && (
           <div style={{ background: 'rgba(255,0,0,0.1)', color: '#ff6b6b', padding: '0.6rem', borderRadius: '6px', marginBottom: '1rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
@@ -1067,7 +1067,7 @@ function App() {
   if (authLoading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <div style={{ textAlign: 'center' }}>
-        <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem || "D&D"} style={{ height: currentSystem?.includes('Pathfinder') ? '40px' : '60px', marginBottom: '1rem', opacity: 0.6, filter: currentSystem?.includes('Pathfinder') ? 'invert(1)' : 'none' }} />
+        <img src={currentSystem?.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem || "D&D"} style={{ height: currentSystem?.includes('Pathfinder') ? '40px' : '60px', marginBottom: '1rem', opacity: 0.6 }} />
         <p style={{ color: 'var(--text-muted)' }}>Loading Chronicle...</p>
       </div>
     </div>
