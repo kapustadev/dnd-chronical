@@ -98,7 +98,7 @@ const Header = ({ currentView, setView, user, profile, handleLogout, currentSyst
 
       <div className="main-nav">
         <div className="logo-container" onClick={() => handleNav('home')}>
-          <img src={currentSystem.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem} className="logo-image" style={{ objectPosition: 'top', filter: currentSystem.includes('Pathfinder') ? 'drop-shadow(0 0 10px rgba(255,255,255,0.2))' : 'none', height: currentSystem.includes('Pathfinder') ? '35px' : 'auto' }} />
+          <img src={currentSystem.includes('Pathfinder') ? '/Pathfinder_RPG_1e_logo.svg.png' : '/DnD-Symbol.png'} alt={currentSystem} className="logo-image" style={{ objectPosition: 'top', height: currentSystem.includes('Pathfinder') ? '35px' : 'auto' }} />
           <div className="logo-text">CHRONICLE</div>
         </div>
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
