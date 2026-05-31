@@ -51,7 +51,7 @@ const Header = ({ currentView, setView, user, profile, handleLogout, currentSyst
   const [notifications, setNotifications] = useState([]);
 
   const languages = ['English', 'Español', 'Français', 'Deutsch', 'Italiano', 'Русский'];
-  const systems = ['D&D 5e', 'Pathfinder 1e'];
+  const systems = ['D&D 5e', 'Pathfinder 2e'];
   const handleNav = (v) => { setView(v); setMenuOpen(false); };
   const isAppView = ['cabinet','characters','campaigns'].includes(currentView);
 
