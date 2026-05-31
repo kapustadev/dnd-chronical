@@ -501,7 +501,7 @@ const CharacterDashCard = ({ char, onEdit, onDelete, onDownload }) => {
             <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{charData.race || '—'} &bull; </span>
             <span style={{ fontSize: '0.78rem', color: 'var(--accent-red)', fontWeight: 600 }}>{charData.className || '—'}</span>
           </div>
-          <div style={{ fontSize: '0.72rem', background: 'rgba(255,255,255,0.07)', padding: '2px 7px', borderRadius: '100px', fontWeight: 700 }}>Lv {charData.level || 1}</div>
+          <div style={{ fontSize: '0.72rem', background: 'rgba(255,255,255,0.07)', padding: '2px 7px', borderRadius: '100px', fontWeight: 700 }}>Lvl {charData.level || 1}</div>
         </div>
         <button onClick={e => { e.stopPropagation(); onDownload(); }}
           style={{ marginTop: '8px', width: '100%', background: 'transparent', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '5px', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.72rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', transition: 'all 0.15s' }}
@@ -726,7 +726,7 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
         <StatPill icon={Shield} label="Characters" value={characters.length} color="var(--accent-red)" />
         <StatPill icon={Scroll} label="Campaigns" value={campaigns.length} color="#60a5fa" />
         <StatPill icon={Users} label="Friends" value={friends.length} color="#34d399" />
-        <StatPill icon={Trophy} label="Highest Lv" value={characters.length ? Math.max(...characters.map(c => c.data?.level || 1)) : 0} color="#f59e0b" />
+        <StatPill icon={Trophy} label="Highest Lvl" value={characters.length ? Math.max(...characters.map(c => c.data?.level || 1)) : 0} color="#f59e0b" />
         <StatPill icon={Calendar} label="Sessions" value={campaigns.length * 2} color="#a78bfa" />
         <StatPill icon={Swords} label="Monsters Slain" value={characters.length * 15} color="#fb7185" />
         <StatPill icon={Dices} label="Dice Rolled" value={characters.length * 124 + campaigns.length * 342} color="#2dd4bf" />
@@ -767,7 +767,7 @@ const CabinetScreen = ({ setView, user, profile, setProfile }) => {
                 <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundImage: `url(/assets/images/class_${(char.data?.className || '').toLowerCase()}.png)`, backgroundSize: 'cover', backgroundColor: '#333', flexShrink: 0 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 700, fontSize: '0.88rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{char.data?.name || char.name || 'Unnamed'}</div>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{char.data?.race} {char.data?.className} Lv{char.data?.level || 1}</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{char.data?.race} {char.data?.className} Lvl {char.data?.level || 1}</div>
                 </div>
                 <button onClick={() => editCharacter(char)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}><Edit3 size={14} /></button>
               </div>

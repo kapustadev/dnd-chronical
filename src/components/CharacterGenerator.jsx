@@ -586,7 +586,7 @@ const CharacterGenerator = ({ user, onSave }) => {
   const stepConfig = [
     { id: 'setup',       label: 'Setup',        icon: User,       getValue: () => char.name || null },
     { id: 'race',        label: 'Race',          icon: Moon,       getValue: () => char.race || null },
-    { id: 'class',       label: 'Class',         icon: Shield,     getValue: () => char.className ? `${char.className} Lv${char.level}` : null },
+    { id: 'class',       label: 'Class',         icon: Shield,     getValue: () => char.className ? `${char.className} Lvl ${char.level}` : null },
     { id: 'abilities',   label: 'Abilities',     icon: Activity,   getValue: () => null },
     { id: 'description', label: 'Background',    icon: Book,       getValue: () => char.background || null },
     { id: 'equipment',   label: 'Equipment',     icon: Sword,      getValue: () => null },
@@ -654,7 +654,7 @@ const CharacterGenerator = ({ user, onSave }) => {
           <div className="sidebar-char-card">
             <div className="sidebar-char-image" style={{ backgroundImage: `url(${classImages[char.className] || '/assets/images/epic_dnd_background.png'})` }} />
             <div className="sidebar-char-meta">
-              {[char.race, char.className, char.level ? `Lv ${char.level}` : null].filter(Boolean).join(' · ')}
+              {[char.race, char.className, char.level ? `Lvl ${char.level}` : null].filter(Boolean).join(' · ')}
             </div>
           </div>
         )}
